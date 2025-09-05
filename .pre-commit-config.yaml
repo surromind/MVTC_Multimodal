@@ -7,7 +7,8 @@ repos:
     -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
-
+        exclude: "test_dataset_filtered_PHAC2/*"
+        
 -   repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
