@@ -2,6 +2,12 @@
 ## VTC(Vision&Tactile Cognition)
 - The VTC project develops a multimodal generative model that takes **images** and **tactile modality vectors** as input to generate **tactile sensor signals**.
 
+## Dataset
+- This project experimentally uses the **PHAC2 dataset** for tactile modality experiments.  
+- The dataset is applied for **research and validation purposes only**.  
+- Please ensure that you have the appropriate usage rights and follow the dataset’s license and guidelines.
+
+
 ## Settings
 ### Build a docker image
 ```
