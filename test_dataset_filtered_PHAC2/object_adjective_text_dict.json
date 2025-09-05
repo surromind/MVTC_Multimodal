@@ -1,0 +1,23 @@
+{
+    "soap_dispenser": "hard, smooth, solid, thick",
+    "bubble_wrap": "bumpy, squishy",
+    "cutting_board": "hard, rough, solid, textured",
+    "brick": "hard, rough, solid, textured, thick",
+    "yellow_felt": "fuzzy, hairy, soft, squishy",
+    "shelf_liner": "bumpy, compressible, squishy, textured",
+    "cushioned_envelope": "compressible, crinkly, smooth, squishy, thin",
+    "bumpy_foam": "absorbent, bumpy, compressible, porous, soft, springy, squishy",
+    "toilet_paper": "absorbent, compressible, fuzzy, soft, squishy",
+    "index_card_case": "compressible, cool, smooth",
+    "loofah": "hairy, rough, scratchy, textured",
+    "black_foam": "compressible, scratchy, squishy, textured",
+    "notepad": "hard, smooth, solid, textured, thick",
+    "tarp": "compressible, squishy, textured",
+    "concrete": "hard, rough, solid, textured",
+    "pool_noodle": "compressible, smooth, squishy",
+    "cookie_box": "smooth",
+    "steel_vase": "cool, hard, metallic, smooth, solid, thick",
+    "coco_liner": "hairy, rough, scratchy, textured, unpleasant",
+    "kitchen_sponge": "absorbent, compressible, porous, soft, springy, squishy, textured",
+    "placemat": "smooth"
+}
