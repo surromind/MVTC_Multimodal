@@ -2,28 +2,11 @@
 ## VTC(Vision&Tactile Cognition)
 - The VTC project develops a multimodal generative model that takes **images** and **tactile modality vectors** as input to generate **tactile sensor signals**.
 
-## Dataset
-- This project experimentally uses the **PHAC2 dataset** for tactile modality experiments.  
-- The dataset is applied for **research and validation purposes only**.  
-- Please ensure that you have the appropriate usage rights and follow the dataset’s license and guidelines.
-
-
 ## Settings
-### Build a docker image
+### Build
 ```
-docker container run --gpus all --name={container_name} --restart=always -it {image_name} /bin/bash
-```
-
-### Install packages with pipfile
-```
-./setup-dev.sh
-pipenv shell
-```
-
-### PyTorch
-```
-pipenv run pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 \
-    --index-url https://download.pytorch.org/whl/cu121
+./scripts/build.sh
+./scripts/run.sh
 ```
 
 ### Embedding Model Requirements

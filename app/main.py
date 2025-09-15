@@ -3,8 +3,8 @@ import os
 
 from natsort import natsorted
 
-from app.core.vtc_embedder import VTC_Embedder
-from app.utils.json_utils import load_json
+from core.vtc_embedder import VTC_Embedder
+from utils.json_utils import load_json
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

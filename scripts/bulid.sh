@@ -1,0 +1,1 @@
+docker build --tag mvtc_multimodal:1.0 .
