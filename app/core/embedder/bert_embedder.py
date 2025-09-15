@@ -16,7 +16,9 @@ class BERT_Embedder(BaseEmbedder):
         ValueError("BERT_Embedder: get_img_embedding is not supported")
         return False
 
-    def get_text_embedding(self, text: str, return_type: Literal["cls", "mean"] = "cls") -> torch.Tensor:
+    def get_text_embedding(
+        self, text: str, return_type: Literal["cls", "mean"] = "cls"
+    ) -> torch.Tensor:
         """
         입력 텍스트에 대한 BERT 임베딩을 추출하는 함수.
 
@@ -32,7 +34,9 @@ class BERT_Embedder(BaseEmbedder):
             torch.Tensor: 지정된 방식으로 추출된 텍스트 임베딩 텐서.
                 - shape: [1, hidden_dim]
         """
-        input = self.tokenizer(text, padding=True, truncation=True, return_tensors="pt").to(self.device)
+        input = self.tokenizer(
+            text, padding=True, truncation=True, return_tensors="pt"
+        ).to(self.device)
         with torch.no_grad():
             outputs = self.model(**input)
             cls_embeddings = outputs.pooler_output  # [CLS] 임베딩

@@ -4,7 +4,7 @@ import numpy as np
 
 from app.core.embedder.bert_embedder import BERT_Embedder
 from app.core.embedder.clip_embedder import CLIP_Embedder
-from app.utils.logger import logger
+from config import logger
 
 
 class VTC_Embedder:
@@ -27,11 +27,25 @@ class VTC_Embedder:
         l2norm: bool = True,
     ) -> np.ndarray:
 
-        logger.info("Concatenating image and text embeddings")
         if adj_embedding is not None:
-            concat_embedding = np.concatenate([image_embedding, text_embedding, adj_embedding], axis=0)
+            logger.info("Concatenating image, text and adj embeddings")
+            concat_embedding = np.concatenate(
+                [
+                    image_embedding.detach().cpu().numpy(),
+                    text_embedding.detach().cpu().numpy(),
+                    adj_embedding.detach().cpu().numpy(),
+                ],
+                axis=0,
+            )
         else:
-            concat_embedding = np.concatenate([image_embedding, text_embedding], axis=0)
+            logger.info("Concatenating image and text embeddings")
+            concat_embedding = np.concatenate(
+                [
+                    image_embedding.detach().cpu().numpy(),
+                    text_embedding.detach().cpu().numpy(),
+                ],
+                axis=0,
+            )
 
         if l2norm:
             concat_embedding = self.run_l2_normalize(concat_embedding)

@@ -52,11 +52,14 @@ ENV PYTHON_VERSION=3.12 \
     PYTHONIOENCODING=utf-8 \
     LC_ALL=C.UTF-8
 
-RUN python -m pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 \
-    --index-url https://download.pytorch.org/whl/cu128
+
 
 WORKDIR /MVTC_Multimodal
 COPY . /MVTC_Multimodal
+
+RUN python -m pip install torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 \
+    --index-url https://download.pytorch.org/whl/cu128 \
+    python -m pip install -r requirements.txt
 
 ENV PYTHONPATH=/MVTC_Multimodal
 
