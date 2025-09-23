@@ -1,49 +1,133 @@
+"""CLIP/BERT 참조 임베딩과 촉각 잠재벡터를 단순 결합한 베이스라인 생성 스크립트."""
+
 import argparse
-import os
+from pathlib import Path
 
-import torch
+from app.utils import build_dataset
+from app.utils.embeddings import (
+    build_metadata,
+    collect_embeddings,
+    save_embeddings,
+    visualize_embeddings,
+    write_metadata,
+)
 
-from config import logger
-from core.vtc_embedder import VTC_Embedder
-from utils.txt_utils import load_txt
-from utils.npy_utils import save_npy
-from utils.models import download_models
-from config.path import TEST_DATA_DIR
+from app.core import ConcatenationFusion, load_project_config
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+
+def build_parser() -> argparse.ArgumentParser:
+    """명령행 인자를 정의하는 ArgumentParser를 생성한다."""
+
+    parser = argparse.ArgumentParser(description="Generate concat baseline embeddings")
     parser.add_argument(
-        "--clip_model_path",
+        "--config",
         type=str,
-        default="./models/openai/clip-vit-large-patch14",
+        default="app/config/default.yaml",
+        help="설정 파일 경로",
     )
     parser.add_argument(
-        "--bert_model_path",
+        "--output",
         type=str,
-        default="./models/google-bert/bert-base-multilingual-cased",
+        default="outputs/concat_embeddings.npz",
+        help="저장할 npz 파일 경로",
     )
-    parser.add_argument("--vectors_dir", type=str, default="./vectors")
+    parser.add_argument(
+        "--metadata",
+        type=str,
+        default="outputs/concat_embeddings_meta.json",
+        help="샘플 메타데이터를 저장할 JSON 경로",
+    )
+    parser.add_argument(
+        "--device",
+        type=str,
+        default=None,
+        help="사용할 디바이스(cuda 또는 cpu). 지정하지 않으면 config/device를 따릅니다.",
+    )
+    parser.add_argument(
+        "--figure-dir",
+        type=str,
+        default=None,
+        help="시각화 결과를 저장할 디렉터리 (기본값은 output과 동일한 폴더)",
+    )
+    parser.add_argument(
+        "--tsne-perplexity",
+        type=float,
+        default=20.0,
+        help="t-SNE perplexity 값",
+    )
+    parser.add_argument(
+        "--umap-n-neighbors",
+        type=int,
+        default=15,
+        help="UMAP n_neighbors 값",
+    )
+    parser.add_argument(
+        "--umap-min-dist",
+        type=float,
+        default=0.1,
+        help="UMAP min_dist 값",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="차원 축소용 랜덤 시드",
+    )
+    parser.add_argument(
+        "--no-visualization",
+        action="store_true",
+        help="설정 시 t-SNE/UMAP 시각화를 생략합니다.",
+    )
+    return parser
+
+
+def main() -> None:
+    """설정을 로드하고 임베딩 생성 → 저장 → 시각화 순으로 실행한다."""
+
+    # 1) 사용자 입력 파싱
+    parser = build_parser()
     args = parser.parse_args()
 
-    # CUDA 사용 가능 여부 확인
-    if torch.cuda.is_available():
-        logger.info("CUDA is available")
-    else:
-        logger.info("CUDA is not available")
+    # 2) 프로젝트 설정 및 모델 준비
+    cfg = load_project_config(Path(args.config))
 
-    for model_name in [
-        "openai/clip-vit-large-patch14",
-        "google-bert/bert-base-multilingual-cased",
-    ]:
-        if not os.path.exists(f"./models/{model_name}"):
-            download_models(model_name)
-
-    # TODO : 테스트 데이터 경로 수정
-    logger.info("Starting MVTC Multimodal Embedding")
-    vtc_embedder = VTC_Embedder(args.clip_model_path, args.bert_model_path)
-
-    labels = load_txt("./test_data/labels.txt")
-    vtc_embedding = vtc_embedder.get_vtc_embedding(
-        image_path="./test_data/black_foam.jpg", text=" ".join(labels)
+    fusion = ConcatenationFusion(
+        model_paths=cfg["models"],
+        training_cfg=cfg["training"],
+        device=args.device,
     )
-    save_npy(vtc_embedding, "./test_data/vtc_embedding.npy")
+
+    # 3) 데이터셋 구성 후 임베딩 수집
+    dataset = build_dataset(cfg, fusion.device)
+
+    batch = collect_embeddings(fusion, dataset)
+
+    # 4) 임베딩 및 메타데이터 저장
+    output_path = Path(args.output)
+    save_embeddings(batch, output_path)
+
+    metadata = build_metadata(batch, Path(args.config))
+    metadata_path = Path(args.metadata)
+    write_metadata(metadata, metadata_path)
+
+    print(f"저장 완료: {output_path} ({metadata['num_samples']} samples)")
+    print(f"메타데이터: {metadata_path}")
+
+    if args.no_visualization:
+        return
+
+    # 5) 차원 축소 시각화 수행
+    figure_dir = Path(args.figure_dir) if args.figure_dir else output_path.parent
+    visualize_embeddings(
+        batch,
+        figure_dir,
+        stem=output_path.stem,
+        tsne_perplexity=args.tsne_perplexity,
+        umap_n_neighbors=args.umap_n_neighbors,
+        umap_min_dist=args.umap_min_dist,
+        seed=args.seed,
+    )
+
+
+if __name__ == "__main__":
+    main()
