@@ -1,0 +1,20 @@
+# 기본 설정 파일
+paths:
+  base_dir: ./data
+  image_dir: img
+  text_dir: img_vocab
+  tactile_dir: time_data
+  outputs_dir: ./outputs
+  tactile_scaler: null  # 스케일러는 실행 시 새로 추정됩니다.
+
+models:
+  clip_model: openai/clip-vit-large-patch14
+  bert_model: google-bert/bert-base-multilingual-cased
+  tactile_checkpoint: ./model/model.pt
+
+training:
+  device: auto
+  seed: 42
+  sequence_length: null
+  apply_scaler: true
+  scaler_mode: zscore
