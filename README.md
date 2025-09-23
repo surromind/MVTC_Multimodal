@@ -121,6 +121,11 @@ Compose를 사용할 경우 `docker compose run --rm --gpus all mvtc ...` 형태
 - `meta.json`: 샘플 수, 차원 수, 라벨 목록
 - `*_tsne.png`, `*_umap.png`: concat 임베딩에 대한 2차원 시각화
 
+## 결과 예시
+`default.yaml` 설정으로 생성한 concat 임베딩을 t-SNE로 투영하면 아래와 같은 분포를 확인할 수 있습니다. 클래스별 군집이 분리돼 있어 멀티모달 정렬이 잘 수행되었음을 시각적으로 검증할 수 있습니다.
+
+<img src="docs/concat_embeddings_tsne.png" alt="Concat Embeddings t-SNE" width="480">
+
 ## 참고 경로
 - 데이터: `data/img`, `data/img_vocab`, `data/time_data`
 - 촉각 오토인코더 체크포인트: `model/model.pt`

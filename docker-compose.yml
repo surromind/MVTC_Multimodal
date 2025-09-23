@@ -1,0 +1,13 @@
+services:
+  mvtc:
+    build:
+      context: .
+    image: mvtc-multimodal:latest
+    volumes:
+      - ./data:/app/data:ro
+      - ./model:/app/model:ro
+      - ./outputs:/app/outputs
+      - ~/.cache/huggingface:/cache/huggingface
+    environment:
+      - HF_HOME=/cache/huggingface
+    command: ["--config", "app/config/default.yaml"]
