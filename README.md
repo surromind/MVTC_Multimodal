@@ -128,4 +128,4 @@ Compose를 사용할 경우 `docker compose run --rm --gpus all mvtc ...` 형태
 
 ## 참고 경로
 - 데이터: `data/img`, `data/img_vocab`, `data/time_data`
-- 촉각 오토인코더 체크포인트: `model/model.pt`
+- 촉각 오토인코더 모델 체크포인트: `model/model.pt`
