@@ -116,7 +116,7 @@ def main() -> None:
     if args.no_visualization:
         return
 
-    # 5) 차원 축소 시각화 수행
+    # 5) 군집화 확인을 위한 시각화 수행
     figure_dir = Path(args.figure_dir) if args.figure_dir else output_path.parent
     visualize_embeddings(
         batch,
