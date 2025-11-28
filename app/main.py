@@ -58,7 +58,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--umap-n-neighbors",
         type=int,
-        default=15,
+        default=20,
         help="UMAP n_neighbors 값",
     )
     parser.add_argument(
