@@ -1,6 +1,6 @@
 # MVTC Multimodal Embedder
 
-Multimodal Embedder는 사전학습된 CLIP·BERT 임베더와 TSTF 촉각 오토인코더를 활용해 이미지·텍스트·촉각 데이터를 단일 임베딩 벡터로 정렬하는 베이스라인입니다. 각 모달리티 임베딩을 추출한 뒤 촉각 잠재벡터를 참조(CLIP+텍스트) 임베딩 뒤에 concat하여 `.npz` 아카이브와 시각화를 생성합니다.
+Multimodal Embedder는 사전학습된 CLIP·BERT 임베더와 TSTF 촉각 오토인코더를 활용해 이미지·텍스트·촉각 데이터를 단일 임베딩 벡터로 정렬하는 베이스라인입니다. 각 모달리티 임베딩을 추출한 뒤 촉각 잠재벡터를 참조(CLIP+텍스트) 임베딩 뒤에 concat하여 `.npz` 통합 임베딩 데이터와 시각화를 생성합니다.
 
 ## 디렉터리 구조
 
